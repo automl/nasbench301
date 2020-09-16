@@ -1,0 +1,137 @@
+{
+  "hyperparameters": [
+          {
+      "name": "learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 1e-6,
+      "upper": 1e-1,
+      "default":1e-5
+    },
+    {
+      "name": "learning_rate_min",
+      "type": "constant",
+      "value": 0.0
+    },    
+    {
+      "name": "gnn_node_dimensions",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 256
+    },
+    {
+      "name": "dim_embedding",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 56
+    },     
+    {
+      "name": "gnn_prop_layers",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 2,
+      "upper": 3,
+      "default": 2
+    },      
+    {
+      "name": "batch_size",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 8,
+      "upper": 256,
+      "default": 128
+    },  
+    {
+      "name": "num_regression_layers",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 1,
+      "upper": 10,
+      "default": 4
+    }, 
+    {
+      "name": "num_classifier_layers",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 1,
+      "upper": 10,
+      "default": 2
+    }, 
+    {
+      "name": "loss_function",
+      "type": "constant",
+      "value": "L2"
+    },
+    {
+      "name": "classification_loss",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0,
+      "upper": 1,
+      "default": 1
+    },    
+    {
+      "name": "regression_loss",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0,
+      "upper": 1,
+      "default": 1
+    }, 
+    {
+      "name": "graph_preprocessing:undirected_graph",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "graph_preprocessing:add_node_degree_one_hot",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "graph_preprocessing:init_node_emb",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": true
+    },
+    {
+      "name": "epochs",
+      "type": "constant",
+      "value": 300
+    },
+    {
+      "name": "node_dropout",
+      "type": "constant",
+      "value": 0
+    },
+    {
+      "name": "dropout",
+      "type": "constant",
+      "value": 0
+    },
+    {
+      "name": "no_bins",
+      "type": "constant",
+      "value": 10
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

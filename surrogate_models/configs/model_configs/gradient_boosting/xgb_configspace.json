@@ -1,0 +1,87 @@
+{
+  "hyperparameters": [
+    {
+      "name": "param:num_rounds",
+      "type": "constant",
+      "value": 20000
+    },
+    {
+      "name": "early_stopping_rounds",
+      "type": "constant",
+      "value": 100
+    },
+    {
+      "name": "param:booster",
+      "type": "constant",
+      "value": "gbtree"
+    },
+    {
+      "name": "param:max_depth",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 20,
+      "default": 13
+    },
+    {
+      "name": "param:min_child_weight",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 1,
+      "upper": 100,
+      "default": 39
+    },
+    {
+      "name": "param:colsample_bytree",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 1.0,
+      "default": 0.2545374925231651
+    },
+    {
+      "name": "param:colsample_bylevel",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 1.0,
+      "default": 0.6909224923784677
+    },
+    {
+      "name": "param:lambda",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 0.001,
+      "upper": 1000,
+      "default": 31.393252465064943
+    },
+    {
+      "name": "param:alpha",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 0.001,
+      "upper": 1000,
+      "default": 0.24167936088332426
+    },
+    {
+      "name": "param:learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 0.001,
+      "upper": 0.1,
+      "default": 0.008237525103357958
+    },
+    {
+      "name": "param:bananas_enc",
+      "type": "categorical",
+      "choices": [
+        false
+      ],
+      "default": false
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

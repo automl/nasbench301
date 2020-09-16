@@ -1,0 +1,72 @@
+{
+  "hyperparameters": [
+    {
+      "name": "num_layers",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 2,
+      "upper": 20,
+      "default": 17
+    },
+    {
+      "name": "layer_width",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 5,
+      "upper": 50,
+      "default": 31
+    },
+    {
+      "name": "dropout_prob",
+      "type": "constant",
+      "value": 0.0
+    },
+    {
+      "name": "learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 1e-3,
+      "upper": 1e-1,
+      "default": 0.0021125942551678094
+    },
+    {
+      "name": "learning_rate_min",
+      "type": "constant",
+      "value": 0.0
+    },
+    {
+      "name": "batch_size",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 16,
+      "upper": 128,
+      "default": 122
+    },
+    {
+      "name": "loss:loss_log_transform",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "loss:pairwise_ranking_loss",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "epochs",
+      "type": "constant",
+      "value": 64
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

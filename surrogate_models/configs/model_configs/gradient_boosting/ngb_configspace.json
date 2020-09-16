@@ -1,0 +1,69 @@
+{
+  "hyperparameters": [
+    {
+      "name": "early_stopping_rounds",
+      "type": "constant",
+      "value": 100
+    },
+    {
+      "name": "base:min_samples_split",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 2,
+      "upper": 20,
+      "default": 20
+    },
+    {
+      "name": "base:min_samples_leaf",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 20,
+      "default": 15
+    },
+    {
+      "name": "base:max_features",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.1,
+      "upper": 1.0,
+      "default": 0.7920456318712875
+    },
+    {
+      "name": "base:max_depth",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 25,
+      "default": 6
+    },
+    {
+      "name": "param:n_estimators",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 128,
+      "upper": 512,
+      "default": 505
+    },
+    {
+      "name": "param:minibatch_frac",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.1,
+      "upper": 1.0,
+      "default": 0.5081694143793387
+    },
+    {
+      "name": "param:learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 0.001,
+      "upper": 0.1,
+      "default": 0.08127053060223186
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

@@ -1,0 +1,894 @@
+{
+  "hyperparameters": [
+    {
+      "name": "CreateImageDataLoader:batch_size",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 64,
+      "upper": 128,
+      "default": 96
+    },
+    {
+      "name": "ImageAugmentation:augment",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "ImageAugmentation:autoaugment",
+      "type": "categorical",
+      "choices": [
+        false,
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "ImageAugmentation:cutout",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "ImageAugmentation:cutout_holes",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 3,
+      "default": 1
+    },
+    {
+      "name": "ImageAugmentation:cutout_length",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 50,
+      "default": 16
+    },
+    {
+      "name": "ImageAugmentation:fastautoaugment",
+      "type": "categorical",
+      "choices": [
+        false,
+        true
+      ],
+      "default": false
+    },
+    {
+      "name": "LossModuleSelectorIndices:loss_module",
+      "type": "categorical",
+      "choices": [
+        "cross_entropy"
+      ],
+      "default": "cross_entropy"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:auxiliary",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:drop_path_prob",
+      "type": "constant",
+      "value": 0.2
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_0",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_1",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_0",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_1",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:init_channels",
+      "type": "constant",
+      "value": 50
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_3",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "1_2"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_4",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "1_2",
+        "1_3",
+        "2_3"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "0_4",
+        "1_2",
+        "1_3",
+        "1_4",
+        "2_3",
+        "2_4",
+        "3_4"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_3",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "1_2"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_4",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "1_2",
+        "1_3",
+        "2_3"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "categorical",
+      "choices": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "0_4",
+        "1_2",
+        "1_3",
+        "1_4",
+        "2_3",
+        "2_4",
+        "3_4"
+      ],
+      "default": "0_1"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:layers",
+      "type": "constant",
+      "value": 20
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:network",
+      "type": "categorical",
+      "choices": [
+        "darts"
+      ],
+      "default": "darts"
+    },
+    {
+      "name": "OptimizerSelector:optimizer",
+      "type": "categorical",
+      "choices": [
+        "sgd"
+      ],
+      "default": "sgd"
+    },
+    {
+      "name": "OptimizerSelector:sgd:learning_rate",
+      "type": "normal_float",
+      "log": true,
+      "mu": 0.025,
+      "sigma": 0.05,
+      "default": 0.025
+    },
+    {
+      "name": "OptimizerSelector:sgd:momentum",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.1,
+      "upper": 0.99,
+      "default": 0.9
+    },
+    {
+      "name": "OptimizerSelector:sgd:weight_decay",
+      "type": "normal_float",
+      "log": true,
+      "mu": 0.0003,
+      "sigma": 0.0006,
+      "default": 0.0003
+    },
+    {
+      "name": "SimpleLearningrateSchedulerSelector:cosine_annealing:T_max",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 10,
+      "upper": 100,
+      "default": 55
+    },
+    {
+      "name": "SimpleLearningrateSchedulerSelector:cosine_annealing:eta_min",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.0,
+      "upper": 2.0,
+      "default": 1e-08
+    },
+    {
+      "name": "SimpleLearningrateSchedulerSelector:lr_scheduler",
+      "type": "categorical",
+      "choices": [
+        "cosine_annealing"
+      ],
+      "default": "cosine_annealing"
+    },
+    {
+      "name": "SimpleTrainNode:batch_loss_computation_technique",
+      "type": "categorical",
+      "choices": [
+        "mixup"
+      ],
+      "default": "mixup"
+    },
+    {
+      "name": "SimpleTrainNode:mixup:alpha",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 0.01,
+      "upper": 0.7,
+      "default": 0.2
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_10",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_11",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_12",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_13",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_2",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_3",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_4",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_5",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_6",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_7",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_8",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_normal_9",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_10",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_11",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_12",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_13",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_2",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_3",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_4",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_5",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_6",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_7",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_8",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    },
+    {
+      "name": "NetworkSelectorDatasetInfo:darts:edge_reduce_9",
+      "type": "categorical",
+      "choices": [
+        "max_pool_3x3",
+        "avg_pool_3x3",
+        "skip_connect",
+        "sep_conv_3x3",
+        "sep_conv_5x5",
+        "dil_conv_3x3",
+        "dil_conv_5x5"
+      ],
+      "default": "max_pool_3x3"
+    }
+  ],
+  "conditions": [
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_2",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_3",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_3",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_3",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_4",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_3",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_5",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_4",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2",
+        "0_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_6",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_4",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2",
+        "1_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_7",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_4",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2",
+        "2_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_8",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_4",
+      "type": "IN",
+      "values": [
+        "0_3",
+        "1_3",
+        "2_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_10",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2",
+        "1_3",
+        "1_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_11",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2",
+        "2_3",
+        "2_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_12",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "IN",
+      "values": [
+        "0_3",
+        "1_3",
+        "2_3",
+        "3_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_13",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "IN",
+      "values": [
+        "0_4",
+        "1_4",
+        "2_4",
+        "3_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_normal_9",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_normal_5",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "0_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_2",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_3",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_3",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_3",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_4",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_3",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_5",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_4",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2",
+        "0_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_6",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_4",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2",
+        "1_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_7",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_4",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2",
+        "2_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_8",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_4",
+      "type": "IN",
+      "values": [
+        "0_3",
+        "1_3",
+        "2_3"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_10",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "1_2",
+        "1_3",
+        "1_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_11",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "IN",
+      "values": [
+        "0_2",
+        "1_2",
+        "2_3",
+        "2_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_12",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "IN",
+      "values": [
+        "0_3",
+        "1_3",
+        "2_3",
+        "3_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_13",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "IN",
+      "values": [
+        "0_4",
+        "1_4",
+        "2_4",
+        "3_4"
+      ]
+    },
+    {
+      "child": "NetworkSelectorDatasetInfo:darts:edge_reduce_9",
+      "parent": "NetworkSelectorDatasetInfo:darts:inputs_node_reduce_5",
+      "type": "IN",
+      "values": [
+        "0_1",
+        "0_2",
+        "0_3",
+        "0_4"
+      ]
+    }
+  ],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

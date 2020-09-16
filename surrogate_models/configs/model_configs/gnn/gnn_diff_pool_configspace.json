@@ -1,0 +1,112 @@
+{
+  "hyperparameters": [
+    {
+      "name": "gnn_hidden_dimensions",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 28
+    },
+    {
+      "name": "dim_embedding",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 26
+    },
+    {
+      "name": "dim_embedding_MLP",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 199
+    },
+    {
+      "name": "num_layers",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 1,
+      "upper": 20,
+      "default": 12
+    },
+    {
+      "name": "learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 1e-3,
+      "upper": 1e-1,
+      "default": 0.001976975225495194
+    },
+    {
+      "name": "learning_rate_min",
+      "type": "constant",
+      "value": 0.0
+    },
+    {
+      "name": "loss_function",
+      "type": "categorical",
+      "choices": [
+        "L2",
+        "L1",
+        "HUBER"
+      ],
+      "default": "L2"
+    },
+    {
+      "name": "batch_size",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 16,
+      "upper": 128,
+      "default": 122
+    },
+    {
+      "name": "graph_preprocessing:undirected_graph",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "graph_preprocessing:add_node_degree_one_hot",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": true
+    },
+    {
+      "name": "loss:loss_log_transform",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": true
+    },
+    {
+      "name": "loss:pairwise_ranking_loss",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "epochs",
+      "type": "constant",
+      "value": 32
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

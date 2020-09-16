@@ -1,0 +1,120 @@
+{
+  "hyperparameters": [
+    {
+      "name": "gnn_hidden_dimensions",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 256,
+      "default": 24
+    },
+    {
+      "name": "graph_pooling",
+      "type": "constant",
+      "value": "mean"
+    },
+    {
+      "name": "num_gnn_layers",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 2,
+      "upper": 30,
+      "default": 8
+    },
+    {
+      "name": "dropout_prob",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0,
+      "upper": 1,
+      "default": 0.0349564190323054
+    },
+    {
+      "name": "learning_rate",
+      "type": "uniform_float",
+      "log": true,
+      "lower": 1e-3,
+      "upper": 1e-1,
+      "default": 0.0777067389388621
+    },
+    {
+      "name": "learning_rate_min",
+      "type": "constant",
+      "value": 0.0
+    },
+    {
+      "name": "loss_function",
+      "type": "categorical",
+      "choices": [
+        "L1"
+      ],
+      "default": "L1"
+    },
+    {
+      "name": "batch_size",
+      "type": "constant",
+      "value": 51
+    },
+    {
+      "name": "virtual_node",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "graph_preprocessing:undirected_graph",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "graph_preprocessing:self_loops",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": false
+    },
+    {
+      "name": "graph_preprocessing:add_node_degree_one_hot",
+      "type": "categorical",
+      "choices": [
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "loss:loss_log_transform",
+      "type": "categorical",
+      "choices": [
+        true,
+        false
+      ],
+      "default": true
+    },
+    {
+      "name": "loss:pairwise_ranking_loss",
+      "type": "categorical",
+      "choices": [
+        false,
+        true
+      ],
+      "default": true
+    },
+    {
+      "name": "epochs",
+      "type": "constant",
+      "value": 128
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}

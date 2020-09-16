@@ -1,0 +1,46 @@
+{
+  "hyperparameters": [
+    {
+      "name": "n_estimators",
+      "type": "uniform_int",
+      "log": true,
+      "lower": 16,
+      "upper": 128,
+      "default": 116
+    },
+    {
+      "name": "min_samples_split",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 2,
+      "upper": 20,
+      "default": 2
+    },
+    {
+      "name": "min_samples_leaf",
+      "type": "uniform_int",
+      "log": false,
+      "lower": 1,
+      "upper": 20,
+      "default": 2
+    },
+    {
+      "name": "max_features",
+      "type": "uniform_float",
+      "log": false,
+      "lower": 0.1,
+      "upper": 1.0,
+      "default":  0.17055852159745608
+    },
+    {
+      "name":"bootstrap",
+      "type":"categorical",
+      "choices":["True", "False"],
+      "default": "False"
+    }
+  ],
+  "conditions": [],
+  "forbiddens": [],
+  "python_module_version": "0.4.11",
+  "json_format_version": 0.1
+}
