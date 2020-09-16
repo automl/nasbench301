@@ -1,8 +1,8 @@
 # NAS-Bench-301
 
-This repository containts the code for the paper: ["NAS-Bench-301 and the Case for Surrogate Benchmarks for Neural Architecture Search"](https://arxiv.org/abs/2008.09777).
+This repository containts code for the paper: ["NAS-Bench-301 and the Case for Surrogate Benchmarks for Neural Architecture Search"](https://arxiv.org/abs/2008.09777).
 
-The surrogate models for the arXiv version v0.9 can be downloaded via ...
+The surrogate models for the arXiv version (v0.9) can be downloaded on [figshare](https://figshare.com/articles/software/nasbench301_models_v0_9_zip/12962432).
 
 To install all requirements (this may take a few minutes), run
 
@@ -18,4 +18,4 @@ $ export PYTHONPATH=$PWD
 $ python3 nasbench301/example.py
 ```
 
-## NOTE: This codebase is still subject to changes. Upcoming updates include improved version of the surrogate models and code for all experiments from the paper. The API may still be subject to changes.
+## NOTE: This codebase is still subject to changes. Upcoming updates include improved versions of the surrogate models and code for all experiments from the paper. The API may still be subject to changes.
