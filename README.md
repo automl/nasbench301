@@ -8,8 +8,12 @@ To install all requirements (this may take a few minutes), run
 
 ```sh
 $ cat requirements.txt | xargs -n 1 -L 1 pip install
-$ pip install torch-scatter==2.0.4+cu102 torch-sparse==0.6.3+cu102 torch-cluster==1.5.5+cu102 torch-spline-conv==1.2.0+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-$ pip install torch-geometric
+```
+
+or simply install the pypi package:
+
+```sh
+$ pip install nasbench301
 ```
 
 To run a quick example, adapt the model paths in 'nasbench301/example.py' and from the base directory run
