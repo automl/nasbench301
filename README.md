@@ -8,11 +8,6 @@ To install all requirements (this may take a few minutes), run
 
 ```sh
 $ cat requirements.txt | xargs -n 1 -L 1 pip install
-```
-
-or simply install the pypi package:
-
-```sh
 $ pip install nasbench301
 ```
 
