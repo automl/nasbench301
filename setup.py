@@ -16,7 +16,7 @@ with open('requirements.txt', 'r') as f:
 
 setuptools.setup(
     name="nasbench301",
-    version="0.1",
+    version="0.2",
     author="AutoML Freiburg",
     author_email="zimmerl@informatik.uni-freiburg.de",
     description=("A surrogate benchmark for neural architecture search"),
@@ -27,6 +27,7 @@ setuptools.setup(
     keywords="machine learning"
              "optimization tuning neural architecture deep learning",
     packages=setuptools.find_packages(),
+    package_data={"nasbench301": ["surrogate_models"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
