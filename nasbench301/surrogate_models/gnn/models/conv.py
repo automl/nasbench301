@@ -4,7 +4,7 @@ from torch_geometric.nn import MessagePassing
 from torch_geometric.nn import global_add_pool
 from torch_geometric.utils import degree
 
-from surrogate_models.gnn.gnn_utils import OP_PRIMITIVES
+from nasbench301.surrogate_models.gnn.gnn_utils import OP_PRIMITIVES
 
 
 ### GIN convolution along the graph structure

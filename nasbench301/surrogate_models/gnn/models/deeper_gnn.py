@@ -4,9 +4,9 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 
-from surrogate_models.gnn.gnn_utils import OP_PRIMITIVES
-from surrogate_models.gnn.models.gcn_lib.sparse.torch_nn import norm_layer
-from surrogate_models.gnn.models.gcn_lib.sparse.torch_vertex import GENConv
+from nasbench301.surrogate_models.gnn.gnn_utils import OP_PRIMITIVES
+from nasbench301.surrogate_models.gnn.models.gcn_lib.sparse.torch_nn import norm_layer
+from nasbench301.surrogate_models.gnn.models.gcn_lib.sparse.torch_vertex import GENConv
 
 
 class DeeperGCN(torch.nn.Module):

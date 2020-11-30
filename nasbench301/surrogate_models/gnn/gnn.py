@@ -10,14 +10,14 @@ from torch_geometric.data import Batch
 from torch_geometric.data import DataLoader
 from tqdm import tqdm
 
-from surrogate_models import utils
-from surrogate_models.gnn.gnn_utils import NASBenchDataset, Patience
-from surrogate_models.gnn.models.deep_multisets import DeepMultisets
-from surrogate_models.gnn.models.deeper_gnn import DeeperGCN
-from surrogate_models.gnn.models.diff_pool import DiffPool
-from surrogate_models.gnn.models.gincnn import GIN
-from surrogate_models.gnn.models.vsgae_enc import GNNpred, GNNpred_classifier
-from surrogate_models.surrogate_model import SurrogateModel
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.gnn.gnn_utils import NASBenchDataset, Patience
+from nasbench301.surrogate_models.gnn.models.deep_multisets import DeepMultisets
+from nasbench301.surrogate_models.gnn.models.deeper_gnn import DeeperGCN
+from nasbench301.surrogate_models.gnn.models.diff_pool import DiffPool
+from nasbench301.surrogate_models.gnn.models.gincnn import GIN
+from nasbench301.surrogate_models.gnn.models.vsgae_enc import GNNpred, GNNpred_classifier
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 sns.set_style('whitegrid')
 

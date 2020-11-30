@@ -3,8 +3,8 @@ import json
 from pathlib import Path
 
 from nasbench301 import representations
-from surrogate_models import utils
-from surrogate_models.ensemble import Ensemble
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.ensemble import Ensemble
 
 
 fixed_hyperparameters = {

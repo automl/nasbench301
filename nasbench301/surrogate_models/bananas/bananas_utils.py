@@ -7,8 +7,8 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from surrogate_models.bananas.bananas_src.darts.arch import Arch
-from surrogate_models.bananas.darts_src.genotypes import Genotype
+from nasbench301.surrogate_models.bananas.bananas_src.darts.arch import Arch
+from nasbench301.surrogate_models.bananas.darts_src.genotypes import Genotype
 
 OPS = ['max_pool_3x3',
        'avg_pool_3x3',

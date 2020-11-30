@@ -7,8 +7,8 @@ import matplotlib
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
 
-from surrogate_models import utils
-from surrogate_models.ensemble import Ensemble
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.ensemble import Ensemble
 
 matplotlib.use('Agg')
 

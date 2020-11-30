@@ -7,10 +7,10 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from surrogate_models import utils
-from surrogate_models.bananas.bananas_utils import BANANASDataset, BANANASPT
-from surrogate_models.gnn.gnn_utils import Patience
-from surrogate_models.surrogate_model import SurrogateModel
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.bananas.bananas_utils import BANANASDataset, BANANASPT
+from nasbench301.surrogate_models.gnn.gnn_utils import Patience
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 
 class BANANASModel(SurrogateModel):

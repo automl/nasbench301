@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from surrogate_models.gnn.gnn_utils import NASBenchDataset
+from nasbench301.surrogate_models.gnn.gnn_utils import NASBenchDataset
 
 
 class MyTestCase(unittest.TestCase):

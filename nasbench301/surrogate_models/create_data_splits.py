@@ -7,7 +7,7 @@ import time
 import click
 import matplotlib
 
-from surrogate_models import utils
+from nasbench301.surrogate_models import utils
 
 matplotlib.use('Agg')
 

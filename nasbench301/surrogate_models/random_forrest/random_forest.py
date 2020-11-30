@@ -2,20 +2,19 @@ import logging
 import os
 import pickle
 
-import numpy as np
-from sklearn.ensemble import RandomForestRegressor
 import matplotlib.pyplot as plt
+import numpy as np
+from robo.models import random_forest as rf
 
-from surrogate_models import utils
-from surrogate_models.surrogate_model import SurrogateModel
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 
-class SklearnForest(SurrogateModel):
+class RandomForest(SurrogateModel):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
-        super(SklearnForest, self).__init__(data_root, log_dir, seed, model_config, data_config)
+        super(RandomForest, self).__init__(data_root, log_dir, seed, model_config, data_config)
         # Instantiate model
-        rf_config = {k:v for k,v in model_config.items() if k!="model"}
-        self.model = RandomForestRegressor(**rf_config)
+        self.model = rf.RandomForest(num_trees=self.model_config['num_trees'])
 
     def load_results_from_result_paths(self, result_paths):
         """
@@ -48,23 +47,22 @@ class SklearnForest(SurrogateModel):
     def train(self):
         X_train, y_train, _ = self.load_results_from_result_paths(self.train_paths)
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
-        self.model.fit(X_train, y_train)
+        self.model.train(X_train, y_train)
 
-        train_pred, var_train = self.model.predict(X_train), None
-        val_pred, var_val = self.model.predict(X_val), None
+        mu_train, var_train = self.model.predict(X_train)
+        mu_val, var_val = self.model.predict(X_val)
 
-        #self.save()
-
-        fig_train = utils.scatter_plot(np.array(train_pred), np.array(y_train), xlabel='Predicted', ylabel='True', title='')
+        fig_train = utils.scatter_plot(np.array(mu_train), np.array(y_train), xlabel='Predicted', ylabel='True',
+                                       title='')
         fig_train.savefig(os.path.join(self.log_dir, 'pred_vs_true_train.jpg'))
         plt.close()
 
-        fig_val = utils.scatter_plot(np.array(val_pred), np.array(y_val), xlabel='Predicted', ylabel='True', title='')
+        fig_val = utils.scatter_plot(np.array(mu_val), np.array(y_val), xlabel='Predicted', ylabel='True', title='')
         fig_val.savefig(os.path.join(self.log_dir, 'pred_vs_true_val.jpg'))
         plt.close()
 
-        train_metrics = utils.evaluate_metrics(y_train, train_pred, prediction_is_first_arg=False)
-        valid_metrics = utils.evaluate_metrics(y_val, val_pred, prediction_is_first_arg=False)
+        train_metrics = utils.evaluate_metrics(y_train, mu_train, prediction_is_first_arg=False)
+        valid_metrics = utils.evaluate_metrics(y_val, mu_val, prediction_is_first_arg=False)
 
         logging.info('train metrics: %s', train_metrics)
         logging.info('valid metrics: %s', valid_metrics)
@@ -73,13 +71,13 @@ class SklearnForest(SurrogateModel):
 
     def test(self):
         X_test, y_test, _ = self.load_results_from_result_paths(self.test_paths)
-        test_pred, var_test = self.model.predict(X_test), None
+        mu_test, var_test = self.model.predict(X_test)
 
-        fig = utils.scatter_plot(np.array(test_pred), np.array(y_test), xlabel='Predicted', ylabel='True', title='')
+        fig = utils.scatter_plot(np.array(mu_test), np.array(y_test), xlabel='Predicted', ylabel='True', title='')
         fig.savefig(os.path.join(self.log_dir, 'pred_vs_true_test.jpg'))
         plt.close()
 
-        test_metrics = utils.evaluate_metrics(y_test, test_pred, prediction_is_first_arg=False)
+        test_metrics = utils.evaluate_metrics(y_test, mu_test, prediction_is_first_arg=False)
 
         logging.info('test metrics %s', test_metrics)
 
@@ -87,9 +85,9 @@ class SklearnForest(SurrogateModel):
 
     def validate(self):
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
-        val_pred, var_val = self.model.predict(X_val), None
-        
-        valid_metrics = utils.evaluate_metrics(y_val, val_pred, prediction_is_first_arg=False)
+        mu_val, var_val = self.model.predict(X_val)
+
+        valid_metrics = utils.evaluate_metrics(y_val, mu_val, prediction_is_first_arg=False)
 
         logging.info('validation metrics %s', valid_metrics)
 
@@ -103,10 +101,9 @@ class SklearnForest(SurrogateModel):
 
     def evaluate(self, result_paths):
         X_test, y_test, _ = self.load_results_from_result_paths(result_paths)
-        test_pred, var_test = self.model.predict(X_test), None
-        
-        test_metrics = utils.evaluate_metrics(y_test, test_pred, prediction_is_first_arg=False)
-        return test_metrics, test_pred, y_test
+        mu_test, var_test = self.model.predict(X_test)
+        test_metrics = utils.evaluate_metrics(y_test, mu_test, prediction_is_first_arg=False)
+        return test_metrics, mu_test, y_test
 
     def query(self, config_dict):
         config_space_instance = self.config_loader.query_config_dict(config_dict)
@@ -132,9 +129,9 @@ class SklearnForest(SurrogateModel):
         X = config_space_instance.get_array().reshape(1, -1)
         idx = np.isnan(X)
         X[idx] = -1
-        
+
         member_preds = [member.predict(X) for member in self.model.estimators_]
-        
+
         pred_mean = np.mean(member_preds)
         noise = np.random.normal(1, np.std(member_preds), 1)[0]
         return pred_mean + noise

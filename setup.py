@@ -27,7 +27,6 @@ setuptools.setup(
     keywords="machine learning"
              "optimization tuning neural architecture deep learning",
     packages=setuptools.find_packages(),
-    package_data={"nasbench301": ["surrogate_models"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",

@@ -2,21 +2,21 @@ import logging
 import os
 import pickle
 
+import lightgbm as lgb
 import matplotlib.pyplot as plt
 import numpy as np
-import xgboost as xgb
 
-from surrogate_models import utils
-from surrogate_models.bananas.bananas_utils import BANANASDataset
-from surrogate_models.surrogate_model import SurrogateModel
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.bananas.bananas_utils import BANANASDataset
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 
-class XGBModel(SurrogateModel):
+class LGBModel(SurrogateModel):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
-        super(XGBModel, self).__init__(data_root, log_dir, seed, model_config, data_config)
+        super(LGBModel, self).__init__(data_root, log_dir, seed, model_config, data_config)
         self.model = None
-        self.model_config["param:objective"] = "reg:squarederror"
-        self.model_config["param:eval_metric"] = "rmse"
+        self.model_config["param:objective"] = "regression"
+        self.model_config["param:metric"] = "rmse"
 
     def load_results_from_result_paths(self, result_paths):
         """
@@ -26,7 +26,7 @@ class XGBModel(SurrogateModel):
         """
         # Get the train/test data
         dataset = BANANASDataset(result_paths=[], config_loader=self.config_loader)
-        hyps, val_accuracies, test_accuracies = [], [], []
+        arch_encoding, val_accuracies, test_accuracies = [], [], []
 
         for result_path in result_paths:
             config_space_instance, val_accuracy, test_accuracy, _ = self.config_loader[result_path]
@@ -34,11 +34,11 @@ class XGBModel(SurrogateModel):
                 enc = dataset.convert_to_bananas_paths_format(config_space_instance)
             else:
                 enc = config_space_instance.get_array()
-            hyps.append(enc)
+            arch_encoding.append(enc)
             val_accuracies.append(val_accuracy)
             test_accuracies.append(test_accuracy)
 
-        X = np.array(hyps)
+        X = np.array(arch_encoding)
         y = np.array(val_accuracies)
 
         # Impute none and nan values
@@ -63,19 +63,22 @@ class XGBModel(SurrogateModel):
         X_train, y_train, _ = self.load_results_from_result_paths(self.train_paths)
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
 
-        dtrain = xgb.DMatrix(X_train, label=y_train)
-        dval = xgb.DMatrix(X_val, label=y_val)
+        logging.info("LGBOOST TRAIN: Careful categoricals not specified in dataset conversion")
+
+        dtrain = lgb.Dataset(X_train, label=y_train)
+        dval = lgb.Dataset(X_val, label=y_val)
 
         param_config = self.parse_param_config()
         param_config["seed"] = self.seed
 
-        self.model = xgb.train(param_config, dtrain, num_boost_round=self.model_config["param:num_rounds"],
+        self.model = lgb.train(param_config,
+                               dtrain,
                                early_stopping_rounds=self.model_config["early_stopping_rounds"],
                                verbose_eval=1,
-                               evals=[(dval, 'val')])
+                               valid_sets=[dval])
 
-        train_pred, var_train = self.model.predict(dtrain), None
-        val_pred, var_val = self.model.predict(dval), None
+        train_pred, var_train = self.model.predict(X_train), None
+        val_pred, var_val = self.model.predict(X_val), None
 
         # self.save()
 
@@ -98,8 +101,7 @@ class XGBModel(SurrogateModel):
 
     def test(self):
         X_test, y_test, _ = self.load_results_from_result_paths(self.test_paths)
-        dtest = xgb.DMatrix(X_test, label=y_test)
-        test_pred, var_test = self.model.predict(dtest), None
+        test_pred, var_test = self.model.predict(X_test), None
 
         fig = utils.scatter_plot(np.array(test_pred), np.array(y_test), xlabel='Predicted', ylabel='True', title='')
         fig.savefig(os.path.join(self.log_dir, 'pred_vs_true_test.jpg'))
@@ -113,8 +115,7 @@ class XGBModel(SurrogateModel):
 
     def validate(self):
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
-        dval = xgb.DMatrix(X_val, label=y_val)
-        val_pred, var_val = self.model.predict(dval), None
+        val_pred, var_val = self.model.predict(X_val), None
 
         valid_metrics = utils.evaluate_metrics(y_val, val_pred, prediction_is_first_arg=False)
 
@@ -130,8 +131,7 @@ class XGBModel(SurrogateModel):
 
     def evaluate(self, result_paths):
         X_test, y_test, _ = self.load_results_from_result_paths(result_paths)
-        dtest = xgb.DMatrix(X_test, label=y_test)
-        test_pred, var_test = self.model.predict(dtest), None
+        test_pred, var_test = self.model.predict(X_test), None
 
         test_metrics = utils.evaluate_metrics(y_test, test_pred, prediction_is_first_arg=False)
         return test_metrics, test_pred, y_test
@@ -139,19 +139,17 @@ class XGBModel(SurrogateModel):
     def query(self, config_dict):
         config_space_instance = self.config_loader.query_config_dict(config_dict)
         X = config_space_instance.get_array().reshape(1, -1)
+        #X = np.array(config_space_instance.get_array())[np.newaxis, :]
         idx = np.isnan(X)
         X[idx] = -1
-        dtest = xgb.DMatrix(X)
-        pred = self.model.predict(dtest)
+        pred = self.model.predict(X)
         return pred
 
 
-class XGBModelTime(XGBModel):
-
+class LGBModelTime(LGBModel):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
-        super(XGBModelTime, self).__init__(data_root, log_dir, seed, model_config, data_config)
+        super(LGBModelTime, self).__init__(data_root, log_dir, seed, model_config, data_config)
 
-    # OVERRIDE
     def load_results_from_result_paths(self, result_paths):
         """
         Read in the result paths and extract hyperparameters and runtime

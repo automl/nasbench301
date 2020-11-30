@@ -1,8 +1,8 @@
 import torch
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool, GlobalAttention, Set2Set
 
-from surrogate_models.gnn.gnn_utils import NODE_PRIMITIVES
-from surrogate_models.gnn.models.conv import GNN_node_Virtualnode, GNN_node
+from nasbench301.surrogate_models.gnn.gnn_utils import NODE_PRIMITIVES
+from nasbench301.surrogate_models.gnn.models.conv import GNN_node_Virtualnode, GNN_node
 
 
 class NodeEncoder(torch.nn.Module):
