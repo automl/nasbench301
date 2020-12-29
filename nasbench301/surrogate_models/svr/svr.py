@@ -6,9 +6,7 @@ import numpy as np
 from sklearn.svm import SVR as sklearn_SVR
 import matplotlib.pyplot as plt
 
-from surrogate_models import utils
-from surrogate_models.surrogate_model import SurrogateModel
-
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 class SVR(SurrogateModel):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
@@ -47,6 +45,7 @@ class SVR(SurrogateModel):
         return X, y, test_accuracies
 
     def train(self):
+        from nasbench301.surrogate_models import utils
         X_train, y_train, _ = self.load_results_from_result_paths(self.train_paths)
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
         self.model.fit(X_train, y_train)
@@ -73,6 +72,7 @@ class SVR(SurrogateModel):
         return valid_metrics
 
     def test(self):
+        from nasbench301.surrogate_models import utils
         X_test, y_test, _ = self.load_results_from_result_paths(self.test_paths)
         test_pred, var_test = self.model.predict(X_test), None
 
@@ -87,6 +87,7 @@ class SVR(SurrogateModel):
         return test_metrics
 
     def validate(self):
+        from nasbench301.surrogate_models import utils
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
         val_pred, var_val = self.model.predict(X_val), None
  
@@ -103,6 +104,7 @@ class SVR(SurrogateModel):
         self.model = pickle.load(open(model_path, 'rb'))
 
     def evaluate(self, result_paths):
+        from nasbench301.surrogate_models import utils
         X_test, y_test, _ = self.load_results_from_result_paths(result_paths)
         test_pred, var_test = self.model.predict(X_test), None
         test_metrics = utils.evaluate_metrics(y_test, test_pred, prediction_is_first_arg=False)

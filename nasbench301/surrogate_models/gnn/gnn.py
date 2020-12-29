@@ -23,6 +23,7 @@ sns.set_style('whitegrid')
 
 rcParams.update({'figure.autolayout': True})
 
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 class GNNSurrogateModel(SurrogateModel):
     def __init__(self, gnn_type, data_root, log_dir, seed, model_config, data_config):
@@ -32,7 +33,7 @@ class GNNSurrogateModel(SurrogateModel):
         self.device = torch.device('cpu')
 
         # Instantiate dataloader to extract one batch in order to know the number of node features
-        test_queue = self.load_results_from_result_paths(['surrogate_models/test/results_fidelity_0/results_0.json'])
+        test_queue = self.load_results_from_result_paths([os.path.join(HERE, '../test/results_fidelity_0/results_0.json')])
         single_graph_batch = next(iter(test_queue))
 
         # Instantiate the GNN

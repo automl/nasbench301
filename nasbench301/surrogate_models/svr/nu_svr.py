@@ -6,9 +6,7 @@ import numpy as np
 from sklearn.svm import NuSVR as sklearn_NuSVR
 import matplotlib.pyplot as plt
 
-from surrogate_models import utils
-from surrogate_models.svr.svr import SVR
-
+from nasbench301.surrogate_models.svr.svr import SVR
 
 class NuSVR(SVR):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
@@ -19,6 +17,8 @@ class NuSVR(SVR):
         self.model = sklearn_NuSVR(**svr_config)
 
     def train(self):
+
+        from nasbench301.surrogate_models import utils
         X_train, y_train, _ = self.load_results_from_result_paths(self.train_paths)
         X_val, y_val, _ = self.load_results_from_result_paths(self.val_paths)
         self.model.fit(X_train, y_train)
@@ -45,6 +45,7 @@ class NuSVR(SVR):
         return valid_metrics
 
     def test(self):
+        from nasbench301.surrogate_models import utils
         X_test, y_test, _ = self.load_results_from_result_paths(self.test_paths)
         test_pred, var_test = self.model.predict(X_test), None
 
