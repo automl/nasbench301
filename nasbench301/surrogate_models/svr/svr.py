@@ -6,8 +6,8 @@ import numpy as np
 from sklearn.svm import SVR as sklearn_SVR
 import matplotlib.pyplot as plt
 
-from surrogate_models import utils
-from surrogate_models.surrogate_model import SurrogateModel
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 
 class SVR(SurrogateModel):

@@ -1,6 +1,6 @@
 from torch import nn
 from torch.nn import Sequential as Seq, Linear as Lin
-from surrogate_models.gnn.models.gcn_utils.data_util import get_atom_feature_dims, get_bond_feature_dims
+from nasbench301.surrogate_models.gnn.models.gcn_utils.data_util import get_atom_feature_dims, get_bond_feature_dims
 
 ##############################
 #    Basic layers

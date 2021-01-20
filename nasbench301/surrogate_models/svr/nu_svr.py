@@ -6,8 +6,8 @@ import numpy as np
 from sklearn.svm import NuSVR as sklearn_NuSVR
 import matplotlib.pyplot as plt
 
-from surrogate_models import utils
-from surrogate_models.svr.svr import SVR
+from nasbench301.surrogate_models import utils
+from nasbench301.surrogate_models.svr.svr import SVR
 
 
 class NuSVR(SVR):
