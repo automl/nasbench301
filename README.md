@@ -18,4 +18,10 @@ $ export PYTHONPATH=$PWD
 $ python3 nasbench301/example.py
 ```
 
+To fit a surrogate model run
+
+```sh
+$ python3 fit_model.py --model gnn_gin --nasbench_data PATH_TO_NB_301_DATA_ROOT --data_config_path configs/data_configs/nb_301.json  --log_dir LOG_DIR
+```
+
 ## NOTE: This codebase is still subject to changes. Upcoming updates include improved versions of the surrogate models and code for all experiments from the paper. The API may still be subject to changes.
