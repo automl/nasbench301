@@ -31,8 +31,15 @@ class GNNSurrogateModel(SurrogateModel):
 
         self.device = torch.device('cpu')
 
+        # NOTE: Updated to use an absolute path so it works installed as a
+        #       package.
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        surrogate_model_dir = os.path.join(current_dir, os.pardir)
+        results_0_path = os.path.join(surrogate_model_dir, 'test',
+                                      'results_fidelity_0', 'results_0.json')
+
         # Instantiate dataloader to extract one batch in order to know the number of node features
-        test_queue = self.load_results_from_result_paths(['surrogate_models/test/results_fidelity_0/results_0.json'])
+        test_queue = self.load_results_from_result_paths([results_0_path])
         single_graph_batch = next(iter(test_queue))
 
         # Instantiate the GNN

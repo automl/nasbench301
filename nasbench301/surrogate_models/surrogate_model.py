@@ -28,8 +28,14 @@ class SurrogateModel(ABC):
         cudnn.enabled = True
         torch.cuda.manual_seed(seed)
 
+        # NOTE: Update to use absolute path, also moved configspace to
+        #       be included in the installed package
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        nasbench_root = os.path.join(current_dir, os.pardir)
+        configspace_path = os.path.join(nasbench_root, 'configspace.json')
+
         # Create config loader
-        self.config_loader = utils.ConfigLoader('configspace.json')
+        self.config_loader = utils.ConfigLoader(configspace_path)
 
         # Load the data
         if log_dir is not None:
