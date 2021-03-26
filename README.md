@@ -14,7 +14,6 @@ $ pip install nasbench301
 To run a quick example, adapt the model paths in 'nasbench301/example.py' and from the base directory run
 
 ```sh
-$ export PYTHONPATH=$PWD
 $ python3 nasbench301/example.py
 ```
 
