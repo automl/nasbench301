@@ -6,7 +6,9 @@ import numpy as np
 from sklearn.svm import NuSVR as sklearn_NuSVR
 import matplotlib.pyplot as plt
 
+from nasbench301.surrogate_models import utils
 from nasbench301.surrogate_models.svr.svr import SVR
+
 
 class NuSVR(SVR):
     def __init__(self, data_root, log_dir, seed, model_config, data_config):
