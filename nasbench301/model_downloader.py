@@ -37,7 +37,7 @@ def download(url, path):
         sys.exit(1)
 
 def download_models(version, delete_zip=True,
-                    download_dir=os.path.getcwd()):
+                    download_dir=os.getcwd()):
 
     # Create paths and names
     download_url = URL_MODELS_0_9 if version == '0.9' else URL_MODELS_1_0
