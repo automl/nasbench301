@@ -26,7 +26,8 @@ model_paths = model_paths_0_9 if version == '0.9' else model_paths_1_0
 # the models
 # Note: If you would like to provide your own model locations, comment this out
 if not all(os.path.exists(model) for model in model_paths.values()):
-    nb.download_models(version=version, delete_zip=True)
+    nb.download_models(version=version, delete_zip=True,
+                       download_dir=current_dir)
 
 # Load the performance surrogate model
 #NOTE: Loading the ensemble will set the seed to the same as used during training (logged in the model_configs.json)

@@ -36,14 +36,15 @@ def download(url, path):
         print('Error downloading from {}'.format(url))
         sys.exit(1)
 
-def download_models(version, delete_zip=True):
+def download_models(version, delete_zip=True,
+                    download_dir=os.path.getcwd()):
 
     # Create paths and names
     download_url = URL_MODELS_0_9 if version == '0.9' else URL_MODELS_1_0
     zip_filename = 'models_{}.zip'.format(version)
     models_folder = 'nb_models_{}'.format(version)
 
-    current_dir = os.path.dirname(os.path.abspath(__file__))
+    current_dir = download_dir
     zip_path = os.path.join(current_dir, zip_filename)
     models_dir = os.path.join(current_dir, models_folder)
 
