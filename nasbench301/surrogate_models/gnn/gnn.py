@@ -23,7 +23,6 @@ sns.set_style('whitegrid')
 
 rcParams.update({'figure.autolayout': True})
 
-
 class GNNSurrogateModel(SurrogateModel):
     def __init__(self, gnn_type, data_root, log_dir, seed, model_config, data_config):
         super(GNNSurrogateModel, self).__init__(data_root=data_root, log_dir=log_dir, seed=seed,
