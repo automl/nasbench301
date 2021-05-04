@@ -16,7 +16,7 @@ with open('requirements.txt', 'r') as f:
 
 setuptools.setup(
     name="nasbench301",
-    version="0.2",
+    version="0.3",
     author="AutoML Freiburg",
     author_email="zimmerl@informatik.uni-freiburg.de",
     description=("A surrogate benchmark for neural architecture search"),
