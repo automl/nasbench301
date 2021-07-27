@@ -1,29 +1,39 @@
+git+https://github.com/automl/Auto-PyTorch.git@nb301
 autograd>=1.3
 click
 Cython
 ConfigSpace==0.4.12
+fasteners
 ipython
+imblearn
 lightgbm>=2.3.1
 matplotlib
+netifaces
 numpy
 pandas
 pathvalidate
 Pillow>=7.1.2
 psutil
+pynisher
+Pyro4
 scikit-image
-scikit-learn>=0.23.1
 scipy
+scikit-learn==0.23.0
 seaborn
+setuptools
+serpent
 statsmodels
 tensorboard==1.14.0
 tensorflow-estimator
 tensorflow-gpu
+tensorboard_logger
 torch==1.5.0
 torchvision==0.6.0
+timm
 tqdm
 xgboost
 torch-scatter==2.0.4+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
 torch-sparse==0.6.3+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
 torch-cluster==1.5.5+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
 torch-spline-conv==1.2.0+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-pip install torch-geometric
+torch-geometric
