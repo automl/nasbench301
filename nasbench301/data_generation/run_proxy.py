@@ -1,7 +1,7 @@
+import os
 import argparse
 import json
 import numpy as np
-import os as os
 import pandas as pd
 import torch
 import shutil
@@ -20,7 +20,7 @@ def evaluate_config(run_id, config_dir, config, logdir):
         "min_workers": 1,
         "budget_type": "epochs",
         "default_dataset_download_dir": "./datasets/",
-        "images_root_folders": ["/home/zimmerl/MultiAutoPyTorch_LZ/datasets/ICML_Datasets/"],
+        "images_root_folders": ["./datasets/cifar10/"],
         "train_metric": "accuracy",
         "additional_metrics": ["cross_entropy"],
         "validation_split": 0.2,
@@ -41,7 +41,9 @@ def evaluate_config(run_id, config_dir, config, logdir):
         with open(config_dir, "r") as f:
             hyperparameter_config = json.load(f)
     else:
-        hyperparameter_config = json.loads(config)
+        with open(config, "r") as f:
+            hyperparameter_config = json.load(f)
+        #hyperparameter_config = json.loads(config)
 
     # NOTE: 'budget' has to be set here according to the T_max value from the config
     hyperparameter_config["NetworkSelectorDatasetInfo:network"] = "darts"
@@ -51,7 +53,8 @@ def evaluate_config(run_id, config_dir, config, logdir):
     print('budget', budget)
 
     autonet_config = autonet.get_current_autonet_config()
-    result = autonet.refit(X_train=np.array(["/home/zimmerl/MultiAutoPyTorch_LZ/datasets/CIFAR10.csv"]), Y_train=np.array([0]),
+    result = autonet.refit(X_train=np.array([os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                             "datasets/CIFAR10.csv")]), Y_train=np.array([0]),
                            X_valid=None, Y_valid=None,
                            hyperparameter_config=hyperparameter_config,
                            autonet_config=autonet_config,
@@ -63,7 +66,7 @@ def evaluate_config(run_id, config_dir, config, logdir):
 
     # Score
     with torch.no_grad():
-        df = pd.read_csv("/home/zimmerl/MultiAutoPyTorch_LZ/datasets/ICML_Datasets/CIFAR_32_test.csv",
+        df = pd.read_csv("./datasets/cifar10/CIFAR_32_test.csv",
                          header=None).values
         X_test = np.array([path for path in df[:, 0]])
         Y_test = np.array(df[:, 1]).astype(np.int32)
@@ -86,7 +89,7 @@ def get_config_dir(config_parent_dir, run_id):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Fit a random config on CIFAR task')
     parser.add_argument("--run_id", type=int, help="An id for the run.")
-    parser.add_argument("--config_parent_dir", type=str, help="Path to config.json", default="/home/zimmerl/nasbench3_darts_eval/archs/configs")
+    parser.add_argument("--config_parent_dir", type=str, help="Path to config.json", default="./configs")
     parser.add_argument("--config", type=str, help="Config as json string", default=None)
     parser.add_argument("--logdir", type=str, help="Directory the results are written to.", default="logs/darts_proxy")
     parser.add_argument("--offset", type=int, help="An id for the run.", default=0)
