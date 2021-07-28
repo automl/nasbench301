@@ -31,6 +31,10 @@ To fit a surrogate model run
 $ python3 fit_model.py --model gnn_gin --nasbench_data PATH_TO_NB_301_DATA_ROOT --data_config_path configs/data_configs/nb_301.json  --log_dir LOG_DIR
 ```
 
+# Training models from scratch
+
+To create the dataset used for the benchmark we trained the model using a version of AutoPyTorch which can be found here: https://github.com/automl/Auto-PyTorch/tree/nb301. We have updated the `requirements.txt`, so please rerun `cat requirements.txt | xargs -n 1 -L 1 pip install` before proceeding further.
+
 To train a model with its hyperparameters and architecture described using a configspace representation (`.json` file), firstly download the [CIFAR10 data](https://drive.google.com/file/d/1d5eusa5Pslje99MMEw_VRaYD6oqRNxdU/view?usp=sharing) as used by AutoPyTorch and extract it at `nasbench301/data_generation/datasets`. Then run the following to start the training:
 
 ```sh
