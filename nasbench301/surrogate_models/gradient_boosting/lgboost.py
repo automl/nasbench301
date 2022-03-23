@@ -2,9 +2,8 @@ import logging
 import os
 import pickle
 
-import lightgbm as lgb
-import matplotlib.pyplot as plt
 import numpy as np
+import lightgbm as lgb
 
 from nasbench301.surrogate_models import utils
 from nasbench301.surrogate_models.bananas.bananas_utils import BANANASDataset
@@ -80,17 +79,6 @@ class LGBModel(SurrogateModel):
         train_pred, var_train = self.model.predict(X_train), None
         val_pred, var_val = self.model.predict(X_val), None
 
-        # self.save()
-
-        fig_train = utils.scatter_plot(np.array(train_pred), np.array(y_train), xlabel='Predicted', ylabel='True',
-                                       title='')
-        fig_train.savefig(os.path.join(self.log_dir, 'pred_vs_true_train.jpg'))
-        plt.close()
-
-        fig_val = utils.scatter_plot(np.array(val_pred), np.array(y_val), xlabel='Predicted', ylabel='True', title='')
-        fig_val.savefig(os.path.join(self.log_dir, 'pred_vs_true_val.jpg'))
-        plt.close()
-
         train_metrics = utils.evaluate_metrics(y_train, train_pred, prediction_is_first_arg=False)
         valid_metrics = utils.evaluate_metrics(y_val, val_pred, prediction_is_first_arg=False)
 
@@ -102,10 +90,6 @@ class LGBModel(SurrogateModel):
     def test(self):
         X_test, y_test, _ = self.load_results_from_result_paths(self.test_paths)
         test_pred, var_test = self.model.predict(X_test), None
-
-        fig = utils.scatter_plot(np.array(test_pred), np.array(y_test), xlabel='Predicted', ylabel='True', title='')
-        fig.savefig(os.path.join(self.log_dir, 'pred_vs_true_test.jpg'))
-        plt.close()
 
         test_metrics = utils.evaluate_metrics(y_test, test_pred, prediction_is_first_arg=False)
 

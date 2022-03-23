@@ -3,52 +3,27 @@ import itertools
 import json
 import os
 import re
-from functools import partial
 from math import isclose
 
 import ConfigSpace as CS
 import ConfigSpace.hyperparameters as CSH
-import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from ConfigSpace.read_and_write import json as config_space_json_r_w
 from scipy.stats import norm, spearmanr, kendalltau
 from sklearn.metrics import mean_squared_error, r2_score
 from tqdm import tqdm
 
-from nasbench301.surrogate_models.bananas.bananas import BANANASModel
-from nasbench301.surrogate_models.gnn.gnn import GNNSurrogateModel
 from nasbench301.surrogate_models.gradient_boosting.lgboost import LGBModel, LGBModelTime
 from nasbench301.surrogate_models.gradient_boosting.xgboost import XGBModel, XGBModelTime
-from nasbench301.surrogate_models.random_forrest.sklearn_forest import SklearnForest
-from nasbench301.surrogate_models.svr.nu_svr import NuSVR
-from nasbench301.surrogate_models.svr.svr import SVR
 
-sns.set_style('whitegrid')
 
 model_dict = {
-
     # NOTE: RUNTIME MODELS SHOULD END WITH "_time"
-
-    # Graph Convolutional Neural Networks
-    'gnn_gin': partial(GNNSurrogateModel, gnn_type='gnn_gin'),
-    'gnn_diff_pool': partial(GNNSurrogateModel, gnn_type='gnn_diff_pool'),
-    'gnn_deep_multisets': partial(GNNSurrogateModel, gnn_type='gnn_deep_multisets'),
-    'gnn_vs_gae': partial(GNNSurrogateModel, gnn_type='gnn_vs_gae'),
-    'gnn_vs_gae_classifier': partial(GNNSurrogateModel, gnn_type='gnn_vs_gae_classifier'),
-    'deeper_gnn': partial(GNNSurrogateModel, gnn_type='deeper_gnn'),
-    'bananas': BANANASModel,
-
     # Baseline methods
-    #'random_forest': RandomForest,
-    'sklearn_forest': SklearnForest,
     'xgb': XGBModel,
     'xgb_time': XGBModelTime,
     'lgb': LGBModel,
     'lgb_time': LGBModelTime,
-    #'ngb': NGBModel,
-    'svr': SVR,
-    'svr_nu': NuSVR,
 }
 
 
@@ -107,32 +82,6 @@ class ConfigLoader:
     def __init__(self, config_space_path):
         self.config_space = self.load_config_space(config_space_path)
 
-        # The exponent to scale the fidelity with.
-        # Used to move architectures across the fidelity budgets
-        # Default at None, hence the fidelity values are not changed
-        self.fidelity_exponent = None
-
-        # The number of skip connections to have in the cell
-        # If this set to None (default) No skip connections will be added to the cell
-        # Maximum is the maximum number of operations.
-        self.parameter_free_op_increase_type = None
-        self.ratio_parameter_free_op_in_cell = None
-
-        # Manually adjust a certain set of hyperparameters
-        self.parameter_change_dict = None
-
-        # Save predefined fidelity multiplier
-        self.fidelity_multiplier = {
-            'SimpleLearningrateSchedulerSelector:cosine_annealing:T_max': 1.762734383267615,
-            'NetworkSelectorDatasetInfo:darts:init_channels': 1.3572088082974532,
-            'NetworkSelectorDatasetInfo:darts:layers': 1.2599210498948732
-        }
-        self.fidelity_starts = {
-            'SimpleLearningrateSchedulerSelector:cosine_annealing:T_max': 50,
-            'NetworkSelectorDatasetInfo:darts:init_channels': 8,
-            'NetworkSelectorDatasetInfo:darts:layers': 5
-        }
-
     def __getitem__(self, path):
         """
         Load the results from results.json
@@ -161,81 +110,11 @@ class ConfigLoader:
         return config_space_instance, runtime
 
     def query_config_dict(self, config_dict):
-        # Evaluation methods
-        # Scale the hyperparameters if needed
-        if self.fidelity_exponent is not None:
-            config_dict = self.scale_fidelity(config_dict)
-
-        # Add selected parameter free op
-        if self.ratio_parameter_free_op_in_cell is not None:
-            config_dict = self.add_selected_parameter_free_op(config_dict)
-
-        # Change a selection of parameters
-        if self.parameter_change_dict is not None:
-            config_dict = self.change_parameter(config_dict)
-
         # Create the config space instance based on the config space
         config_space_instance = \
             self.convert_config_dict_to_configspace_instance(self.config_space, config_dict=config_dict)
 
         return config_space_instance
-
-    def add_selected_parameter_free_op(self, config_dict):
-        """
-        Add selected parameter free operation to the config dict
-        :param config_dict:
-        :return:
-        """
-        assert self.parameter_free_op_increase_type in ['max_pool_3x3',
-                                                        'avg_pool_3x3',
-                                                        'skip_connect'], 'Unknown parameter-free op was selected.'
-        # Dictionary containing operations
-        cell_op_dict_sel_param_free = {'normal': {}, 'reduce': {}}
-        cell_op_dict_non_sel_param_free = {'normal': {}, 'reduce': {}}
-
-        for cell_type in ['normal']:
-            for edge in range(0, 14):
-                key = 'NetworkSelectorDatasetInfo:darts:edge_{}_{}'.format(cell_type, edge)
-                op = config_dict.get(key, None)
-                if op is not None:
-                    if op == self.parameter_free_op_increase_type:
-                        cell_op_dict_sel_param_free[cell_type][key] = op
-                    else:
-                        cell_op_dict_non_sel_param_free[cell_type][key] = op
-
-        # Select random subset of operations which to turn to selected parameter-free op
-        for cell_type in ['normal', 'reduce']:
-            num_sel_param_free_ops = len(cell_op_dict_sel_param_free[cell_type].values())
-            num_non_sel_param_free_ops = len(cell_op_dict_non_sel_param_free[cell_type].values())
-
-            num_ops = num_sel_param_free_ops + num_non_sel_param_free_ops
-            desired_num_sel_param_free_ops = np.round(num_ops * self.ratio_parameter_free_op_in_cell).astype(np.int)
-            remaining_num_sel_param_free_op = desired_num_sel_param_free_ops - num_sel_param_free_ops
-
-            if remaining_num_sel_param_free_op > 0:
-                # There are still more selected parameter free operations to add to satisfy the ratio of
-                # sel param free op. Therefore override some of the other operations to be parameter free op.
-                sel_param_free_idx = np.random.choice(num_non_sel_param_free_ops, remaining_num_sel_param_free_op,
-                                                      replace=False)
-                for idx, (key, value) in enumerate(cell_op_dict_non_sel_param_free[cell_type].items()):
-                    if idx in sel_param_free_idx:
-                        config_dict[key] = self.parameter_free_op_increase_type
-        return config_dict
-
-    def scale_fidelity(self, config_dict):
-        """
-        Scale the fidelity of the current sample
-        :param config_dict:
-        :return:
-        """
-        for name, value in self.fidelity_multiplier.items():
-            config_dict[name] = int(config_dict[name] * value ** self.fidelity_exponent)
-        return config_dict
-
-    def change_parameter(self, config_dict):
-        for name, value in self.parameter_change_dict.items():
-            config_dict[name] = value
-        return config_dict
 
     def convert_config_dict_to_configspace_instance(self, config_space, config_dict):
         """
@@ -523,82 +402,3 @@ def find_key_value(key, dictionary):
                 for result in find_key_value(key, d):
                     yield result
 
-
-def scatter_plot(xs, ys, xlabel, ylabel, title):
-    """
-    Creates scatter plot of the predicted and groundtruth performance
-    :param xs:
-    :param ys:
-    :param xlabel:
-    :param ylabel:
-    :param title:
-    :return:
-    """
-    fig = plt.figure(figsize=(4, 3))
-    plt.tight_layout()
-    plt.grid(True, which='both', ls='-', alpha=0.5)
-    plt.scatter(xs, ys, alpha=0.8, s=4)
-    xs_min = xs.min()
-    xs_max = xs.max()
-    plt.plot(np.linspace(xs_min, xs_max), np.linspace(xs_min, xs_max), 'r', alpha=0.5)
-    plt.xlabel(xlabel=xlabel)
-    plt.ylabel(ylabel=ylabel)
-    plt.title(title)
-    return fig
-
-
-def plot_predictions(mu_train, mu_test, var_train, var_test, train_y, test_y,
-                     log_dir, name='random forest', x1=0, x2=100, y1=0, y2=100):
-    f, ax = plt.subplots(1, 2, figsize=(15, 6))
-
-    if var_train is not None:
-        ll = norm.logpdf(np.array(train_y, dtype=np.float), loc=mu_train, scale=np.sqrt(var_train))
-        c_map = 'viridis'
-    else:
-        ll = 'b'
-        c_map = None
-
-    im1 = ax[0].scatter(mu_train, train_y, c=ll, cmap=c_map)
-    ax[0].set_xlabel('predicted', fontsize=15)
-    ax[0].set_ylabel('true', fontsize=15)
-    ax[0].set_title('{} (train)'.format(name), fontsize=15)
-    ax[0].plot([0, 100], [0, 100], 'k--')
-    if var_train is not None:
-        f.colorbar(im1, ax=ax[0])
-
-    if var_test is not None:
-        ll = norm.logpdf(np.array(test_y, dtype=np.float), loc=mu_test, scale=np.sqrt(var_test))
-        c_map = 'viridis'
-    else:
-        ll = 'b'
-        c_map = None
-
-    ax[1].set_xlim([x1, x2])
-    ax[1].set_ylim([y1, y2])
-
-    im1 = ax[1].scatter(mu_test, test_y, c=ll, cmap=c_map)
-    ax[1].set_xlabel('predicted', fontsize=15)
-    ax[1].set_ylabel('true', fontsize=15)
-    ax[1].set_title('{} (test)'.format(name), fontsize=15)
-    ax[1].plot([0, 100], [0, 100], 'k--')
-    if var_test is not None:
-        f.colorbar(im1, ax=ax[1])
-    plt.tight_layout()
-    plt.savefig(os.path.join(log_dir, '_'.join(name.split()) + '.jpg'))
-    return plt.gcf()
-
-
-class AvgrageMeter(object):
-
-    def __init__(self):
-        self.reset()
-
-    def reset(self):
-        self.avg = 0
-        self.sum = 0
-        self.cnt = 0
-
-    def update(self, val, n=1):
-        self.sum += val * n
-        self.cnt += n
-        self.avg = self.sum / self.cnt

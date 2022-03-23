@@ -1,3 +1,0 @@
-"""
-Code for Bayesian optimization.
-"""

@@ -1,3 +1,0 @@
-"""
-Code for domain classes.
-"""

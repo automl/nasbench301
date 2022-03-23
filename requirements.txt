@@ -7,7 +7,6 @@ fasteners
 ipython
 imblearn
 lightgbm>=2.3.1
-matplotlib
 netifaces
 numpy
 pandas
@@ -19,7 +18,6 @@ Pyro4
 scikit-image
 scipy
 scikit-learn==0.23.0
-seaborn
 setuptools
 serpent
 statsmodels
@@ -32,8 +30,3 @@ torchvision==0.6.0
 timm
 tqdm
 xgboost
-torch-scatter==2.0.4+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-torch-sparse==0.6.3+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-torch-cluster==1.5.5+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-torch-spline-conv==1.2.0+cu102 -f https://pytorch-geometric.com/whl/torch-1.5.0.html
-torch-geometric
