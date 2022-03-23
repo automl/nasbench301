@@ -3,13 +3,9 @@ import json
 import os
 import shutil
 import time
-
 import click
-import matplotlib
 
 from nasbench301.surrogate_models import utils
-
-matplotlib.use('Agg')
 
 
 @click.command()

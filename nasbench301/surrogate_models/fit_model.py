@@ -1,9 +1,9 @@
 import json
 import os
 import time
-
 import click
 import numpy as np
+
 from sklearn.model_selection import StratifiedKFold
 
 from nasbench301.surrogate_models import utils

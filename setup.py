@@ -15,20 +15,6 @@ with open('requirements.txt', 'r') as f:
 #    for line in f:
 #        optional_requirements.append(line.strip())
 
-import subprocess
-
-git_apt = "git+https://github.com/automl/Auto-PyTorch.git@nb301"
-
-try:
-    import autoPyTorch
-except ImportError:
-    if '--user' in sys.argv:
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
-                        '--user', git_apt], check=False)
-    else:
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
-                        git_apt], check=False)
-
 setuptools.setup(
     name="nasbench301",
     version="0.3",
@@ -52,7 +38,7 @@ setuptools.setup(
     ],
 	python_requires='>=3',
     platforms=['Linux'],
-    #install_requires=requirements[1:],
+    install_requires=requirements,
     include_package_data=True
 #    extras_require=optional_requirements
 )

@@ -2,11 +2,10 @@ import json
 import logging
 import os
 import sys
-from abc import ABC, abstractmethod
-from IPython import embed
-
 import numpy as np
 import pathvalidate
+
+from abc import ABC, abstractmethod
 
 from nasbench301.surrogate_models import utils
 
