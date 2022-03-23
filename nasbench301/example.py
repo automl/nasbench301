@@ -7,18 +7,18 @@ import nasbench301 as nb
 
 # Default dirs for models
 # Note: Uses 0.9 as the default models, switch to 1.0 to use 1.0 models
-version = '0.9'
+version = '1.0'
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 models_0_9_dir = os.path.join(current_dir, 'nb_models_0.9')
 model_paths_0_9 = {
     model_name : os.path.join(models_0_9_dir, '{}_v0.9'.format(model_name))
-    for model_name in ['xgb', 'gnn_gin', 'lgb_runtime']
+    for model_name in ['xgb', 'lgb_runtime']
 }
 models_1_0_dir = os.path.join(current_dir, 'nb_models_1.0')
 model_paths_1_0 = {
     model_name : os.path.join(models_1_0_dir, '{}_v1.0'.format(model_name))
-    for model_name in ['xgb', 'gnn_gin', 'lgb_runtime']
+    for model_name in ['xgb', 'lgb_runtime']
 }
 model_paths = model_paths_0_9 if version == '0.9' else model_paths_1_0
 

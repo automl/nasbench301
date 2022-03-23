@@ -6,7 +6,6 @@ import numpy as np
 import xgboost as xgb
 
 from nasbench301.surrogate_models import utils
-from nasbench301.surrogate_models.bananas.bananas_utils import BANANASDataset
 from nasbench301.surrogate_models.surrogate_model import SurrogateModel
 
 
@@ -24,15 +23,11 @@ class XGBModel(SurrogateModel):
         :return:
         """
         # Get the train/test data
-        dataset = BANANASDataset(result_paths=[], config_loader=self.config_loader)
         hyps, val_accuracies, test_accuracies = [], [], []
 
         for result_path in result_paths:
             config_space_instance, val_accuracy, test_accuracy, _ = self.config_loader[result_path]
-            if self.model_config["param:bananas_enc"]:
-                enc = dataset.convert_to_bananas_paths_format(config_space_instance)
-            else:
-                enc = config_space_instance.get_array()
+            enc = config_space_instance.get_array()
             hyps.append(enc)
             val_accuracies.append(val_accuracy)
             test_accuracies.append(test_accuracy)

@@ -7,8 +7,6 @@ from IPython import embed
 
 import numpy as np
 import pathvalidate
-import torch
-import torch.backends.cudnn as cudnn
 
 from nasbench301.surrogate_models import utils
 
@@ -23,10 +21,6 @@ class SurrogateModel(ABC):
 
         # Seeding
         np.random.seed(seed)
-        cudnn.benchmark = True
-        torch.manual_seed(seed)
-        cudnn.enabled = True
-        torch.cuda.manual_seed(seed)
 
         # NOTE: Update to use absolute path, also moved configspace to
         #       be included in the installed package
@@ -141,7 +135,7 @@ class SurrogateModel(ABC):
             preds = [p[0] for p in preds]
 
         logdir = os.path.join(self.log_dir, identifier+"_preds.json")
-        
+
         dump_dict = {"paths": result_paths, "labels": labels, "predictions": preds}
         with open(logdir, "w") as f:
             json.dump(dump_dict, f)

@@ -57,7 +57,7 @@ class BaseConverter():
 
 class ConfigspaceInstanceConverter(BaseConverter):
     """Converter for a ConfigSpace sample to dictionary. Does nothing if it receives a dict"""
-    
+
     def __init__(self, name="configspace"):
         super().__init__(name)
 
@@ -69,7 +69,7 @@ class ConfigspaceInstanceConverter(BaseConverter):
 
 class GenotypeConverter(BaseConverter):
     """Converter for the DARTS genotype."""
-    
+
     def __init__(self, name="genotype"):
         super().__init__(name)
 
@@ -78,26 +78,7 @@ class GenotypeConverter(BaseConverter):
         return config_dict
 
 
-class BANANASConverter(BaseConverter):
-    """BANANAS representation is like the DARTS genotype, but the tuples are inverted (first node, then operation)."""
-
-    def __init__(self, name="BANANAS"):
-        super().__init__(name)
-
-    def convert(self, config):
-        # Convert to genotype
-        normal = [(OPS[op], node) for node, op in bananas_arch[0]]
-        reduction = [(OPS[op], node) for node, op in bananas_arch[1]]
-        concat = list(range(2, 6))
-        genotype = Genotype(normal=normal, reduce=reduction, normal_concat=concat, reduce_concat=concat)
-        
-        # Convert genotype to configspace dictionary
-        config_dict = convert_genotype_to_config(genotype)
-        return config_dict
-
-
 CONVERTER_DICT = {
         "configspace" : ConfigspaceInstanceConverter,
         "genotype" : GenotypeConverter,
-        "BANANAS" : BANANASConverter
         }

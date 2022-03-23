@@ -3,14 +3,14 @@ import itertools
 import json
 import os
 import re
-from math import isclose
-
 import ConfigSpace as CS
 import ConfigSpace.hyperparameters as CSH
 import numpy as np
+
 from ConfigSpace.read_and_write import json as config_space_json_r_w
-from scipy.stats import norm, spearmanr, kendalltau
+from scipy.stats import spearmanr, kendalltau
 from sklearn.metrics import mean_squared_error, r2_score
+from math import isclose
 from tqdm import tqdm
 
 from nasbench301.surrogate_models.gradient_boosting.lgboost import LGBModel, LGBModelTime

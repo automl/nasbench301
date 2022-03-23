@@ -35,7 +35,7 @@ fixed_hyperparameters = {
 
 def load_ensemble(ensemble_parent_directory):
     """Loads a surrogate ensemble
-    
+
     args:
         ensemble_parent_directory: directory which contains the ensemble members. Members must be the same model type
     """
@@ -45,11 +45,11 @@ def load_ensemble(ensemble_parent_directory):
     model_config = json.load(open(os.path.join(ensemble_member_dirs[0], 'model_config.json'), 'r'))
 
     surrogate_model = Ensemble(member_model_name=model_config['model'],
-                               data_root='None', 
+                               data_root='None',
                                log_dir=ensemble_parent_directory,
                                starting_seed=data_config["seed"],
                                model_config=model_config,
-                               data_config=data_config, 
+                               data_config=data_config,
                                ensemble_size=len(ensemble_member_dirs),
                                init_ensemble=False)
 
@@ -75,17 +75,17 @@ class SurrogateAPI():
         """Convert representation to a dictionary"""
         if not representation in self.representations_converters.keys():
             raise NotImplementedError("%s representation is not supported, please choose from %s" %(representation, self.representations_converters.keys()))
-        
+
         converter = self.representations_converters[representation]()
         config_dict = converter.convert(config)
         return config_dict
 
     def predict(self, config, representation, with_noise=True):
         """Return the mean over the predictions of surrogate ensemble individuals with or without noise
-        
+
         args:
             config: An architecture to query, given in any of the supported representations
-            representation: str, representation used for the config 
+            representation: str, representation used for the config
             with_noise: bool, wether to apply noise or only use the mean of the ensemble members as prediction
         """
         config_dict = self.convert_representation(config, representation)

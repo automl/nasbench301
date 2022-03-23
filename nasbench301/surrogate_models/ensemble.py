@@ -64,9 +64,9 @@ class BaggingEnsemble(AbstractEnsemble):
         self.ensemble_members = []
         for ind in range(self.ensemble_size):
             member_logdir = os.path.join(self.base_logdir, "ensemble_member_"+str(ind))
-            
+
             ensemble_member = utils.model_dict[self.member_model_name](log_dir=member_logdir, seed=self.starting_seed+ind, **self.member_model_init_dict)
-            
+
             if self.train_paths == None:
                 self.train_paths = ensemble_member.train_paths
                 self.val_paths = ensemble_member.val_paths
@@ -106,13 +106,13 @@ class BaggingEnsemble(AbstractEnsemble):
         self.train_paths = train_paths
         self.val_paths = val_paths
         self.test_paths = test_paths
-        
+
         # Get member directories
         if isinstance(model_paths, list):
             self.member_logdirs = model_paths
         if isinstance(model_paths, str) and model_paths.endswith('.model'): # compatibility with loading from /surrogate_model.model
             self.member_logdirs = [p for p in os.listdir(os.path.dirname(model_paths)) if os.path.isdir(p)]
-        
+
         # Load ensemble members
         self.ensemble_members = []
         for ind, member_logdir in enumerate(self.member_logdirs):
@@ -131,7 +131,7 @@ class BaggingEnsemble(AbstractEnsemble):
         surrogate_model.test_paths = self.test_paths
         self.ensemble_members.append(surrogate_model)
         self.member_logdirs.append(surrogate_model.log_dir)
-        
+
     def train(self):
         """Train the ensemble members"""
         for ens_mem in self.ensemble_members:
@@ -151,7 +151,7 @@ class BaggingEnsemble(AbstractEnsemble):
         """Get validation metrics using ensemble predictions"""
         val_paths = self.get_val_paths()
         metrics, preds, stddevs, targets = self.evaluate_ensemble(val_paths, apply_noise)
-        
+
         logging.info('==> Ensemble validation metrics %s', metrics)
         return metrics, preds, stddevs, targets
 
@@ -259,15 +259,10 @@ class BaggingEnsemble(AbstractEnsemble):
         return np.mean(ensemble_preds)+noise
 
 
-class Ensemble():
-    
-    def __new__(cls, member_model_name, data_root, log_dir, starting_seed, model_config, data_config, ensemble_size=10, init_ensemble=True):
-        
-        if member_model_name=="ngb":
-            raise NotImplementedError("Ensembles not implemented for ngb!")
-
-        if "forest" in member_model_name:    # random forests have their own query_with_noise implementation
-            return utils.model_dict[member_model_name](data_root, log_dir, starting_seed, model_config, data_config)
-        
-        else:                                # use bagging ensembles for everything else
-            return BaggingEnsemble(member_model_name, data_root, log_dir, starting_seed, model_config, data_config, ensemble_size, init_ensemble)
+class Ensemble(object):
+    def __new__(cls, member_model_name, data_root, log_dir, starting_seed,
+                model_config, data_config, ensemble_size=10,
+                init_ensemble=True):
+        return BaggingEnsemble(member_model_name, data_root, log_dir,
+                               starting_seed, model_config, data_config,
+                               ensemble_size, init_ensemble)

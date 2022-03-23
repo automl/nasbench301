@@ -3,14 +3,11 @@ import os
 import time
 
 import click
-import matplotlib
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
 
 from nasbench301.surrogate_models import utils
 from nasbench301.surrogate_models.ensemble import Ensemble
-
-matplotlib.use('Agg')
 
 
 @click.command()
