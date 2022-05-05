@@ -14,7 +14,7 @@ pandas
 pathvalidate
 Pillow>=7.1.2
 psutil
-pynisher
+pynisher<0.7.0
 Pyro4
 scikit-image
 scipy
