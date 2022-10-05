@@ -1,6 +1,6 @@
 click
 Cython
-ConfigSpace==0.4.12
+ConfigSpace>=0.4.12
 lightgbm>=2.3.1
 xgboost
 numpy
